@@ -4,9 +4,9 @@
 # works with Ubuntu and USB webcam or OrangePi cam 13Mpixel based on ov13850
 #
 
-import cv2                          # import the opencv library for frame capture and image manipulation
+import cv2 # import opencv  for frame capture and image manipulation
 from   rknnlite.api import RKNNLite # original example used RKNN API
-from   yolov3_utils import yolov3_post_process, draw_image_boxes, download_yolov3_weight, show_top5, CLASSES, label_result_img, label_cv2_img
+from   yolov3_utils import yolov3_post_process, draw_image_boxes, download_yolov3_weight, show_top5, label_result_img, label_cv2_img, CLASSES
 
 
 # setup for model
@@ -37,8 +37,13 @@ print('done\n')
 
 # set up camera capture
 #
-#vid = cv2.VideoCapture(0) # USB webcam
-vid = cv2.VideoCapture(11) # OrangePi ov13850 cam1
+#vid = cv2.VideoCapture(0) # USB webcam shows up as /dev/video0
+vid = cv2.VideoCapture(11) # OrangePi ov13850 cam1 shows up as /dev/video11
+vid_w = 640
+vid_h = 480
+vid.set(3, vid_w) # Set to VGA resolution as OrangePi cam defaults to 13MPixel
+vid.set(4, vid_h)
+
 
 # set up crop for inference RoI - 416x416 RoI out of VGA 640x480 frame
 h=w=416 # crop is 416x416 square
@@ -56,6 +61,9 @@ tk = 2              # Line thickness of 2 px
 font = cv2.FONT_HERSHEY_SIMPLEX
 pos = (left+10,top-10)
 fontScale = 0.75
+
+print("\n\nYOLO v3 live inference on VGA frames (cropped to 416x416) using", len(CLASSES), "classes\n")
+print(CLASSES)
 
 # main image-capture and inference loop
 #
