@@ -37,13 +37,15 @@ print('done\n')
 
 # set up camera capture
 #
-#vid = cv2.VideoCapture(0) # USB webcam shows up as /dev/video0
-vid = cv2.VideoCapture(11) # OrangePi ov13850 cam1 shows up as /dev/video11
+#dev_video=0 # USB webcam shows up as /dev/video0
+dev_video=11 # OrangePi ov13850 cam1 shows up as /dev/video11
+vid = cv2.VideoCapture(dev_video) 
+
+# Set to VGA resolution as OrangePi cam defaults to 13MPixel
 vid_w = 640
 vid_h = 480
-vid.set(3, vid_w) # Set to VGA resolution as OrangePi cam defaults to 13MPixel
+vid.set(3, vid_w) 
 vid.set(4, vid_h)
-
 
 # set up crop for inference RoI - 416x416 RoI out of VGA 640x480 frame
 h=w=416 # crop is 416x416 square
